@@ -23,6 +23,8 @@ export default class TimePicker extends Component {
     selectedHours: PropTypes.number,
     selectedMinutes: PropTypes.number,
     onChange: PropTypes.func,
+    hourIntervals: PropTypes.number,
+    minuteIntervals: PropTypes.number,
     hoursUnit: PropTypes.string,
     minutesUnit: PropTypes.string,
   }
@@ -31,6 +33,8 @@ export default class TimePicker extends Component {
     selectedHours: 0,
     selectedMinutes: 0,
     onChange: null,
+    hourIntervals: 1,
+    minuteIntervals: 1,
     hoursUnit: '',
     minutesUnit: '',
   }
@@ -47,9 +51,9 @@ export default class TimePicker extends Component {
   getHoursItems = () => {
     const items = [];
     const { hoursUnit } = this.props;
-    for (let i = 0; i <= MAX_HOURS; i++) {
+    for (let i = 0; i <= parseInt(MAX_HOURS/hourIntervals); i++) {
       items.push(
-        <Picker.Item key={i} value={i} label={`${i.toString()}${hoursUnit}`} />,
+        <Picker.Item key={i * hourIntervals} value={i * hourIntervals} label={`${(i * hourIntervals).toString()}${hoursUnit}`} />,
       );
     }
     return items;
@@ -58,9 +62,9 @@ export default class TimePicker extends Component {
   getMinutesImtes = () => {
     const items = [];
     const { minutesUnit } = this.props;
-    for (let i = 0; i <= MAX_MINUTES; i++) {
+    for (let i = 0; i <= parseInt(MAX_MINUTES/minuteIntervals); i++) {
       items.push(
-        <Picker.Item key={i} value={i} label={`${i.toString()}${minutesUnit}`} />,
+        <Picker.Item key={i*minuteIntervals} value={i*minuteIntervals} label={`${(i*minuteIntervals).toString()}${minutesUnit}`} />,
       );
     }
     return items;
