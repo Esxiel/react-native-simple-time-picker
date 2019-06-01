@@ -25,6 +25,10 @@ export default class TimePicker extends Component {
     onChange: PropTypes.func,
     hourIntervals: PropTypes.number,
     minuteIntervals: PropTypes.number,
+    startHours: PropTypes.number,
+    startMinutes: PropTypes.number,
+    endHours: PropTypes.number,
+    endMinutes: PropTypes.number,
     hoursUnit: PropTypes.string,
     minutesUnit: PropTypes.string,
   }
@@ -35,6 +39,10 @@ export default class TimePicker extends Component {
     onChange: null,
     hourIntervals: 1,
     minuteIntervals: 1,
+    startHours: 0,
+    startMinutes: 0,
+    endHours: MAX_HOURS,
+    endMinutes: MAX_MINUTES,
     hoursUnit: '',
     minutesUnit: '',
   }
@@ -50,8 +58,8 @@ export default class TimePicker extends Component {
 
   getHoursItems = () => {
     const items = [];
-    const { hoursUnit, hourIntervals } = this.props;
-    for (let i = 0; i < parseInt(MAX_HOURS/hourIntervals); i++) {
+    const { hoursUnit, hourIntervals, startHours, endHours } = this.props;
+    for (let i = startHours; i <= parseInt(endHours/hourIntervals); i++) {
       items.push(
         <Picker.Item key={i * hourIntervals} value={i * hourIntervals} label={`${(i * hourIntervals).toString()}${hoursUnit}`} />,
       );
@@ -81,7 +89,12 @@ export default class TimePicker extends Component {
   }
 
   handleChangeMinutes = (itemValue) => {
-    const { onChange } = this.props;
+    const { onChange, startHours, endHours, startMinutes, endMinutes } = this.props;
+    const { selectedHours } = this.state;
+    if ((selectedHours == startHours && itemValue < startMinutes) || (selectedHours == endHours && itemValue > endMinutes)) 
+        {
+            return;
+        }
     this.setState({
       selectedMinutes: itemValue,
     }, () => {
