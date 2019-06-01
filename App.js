@@ -79,7 +79,12 @@ export default class TimePicker extends Component {
   }
 
   handleChangeHours = (itemValue) => {
-    const { onChange } = this.props;
+    const { onChange, startHours, endHours, startMinutes, endMinutes } = this.props;
+    const { selectedMinutes } = this.state;
+    if ((itemValue == startHours && selectedMinutes < startMinutes) || (itemValue == endHours && selectedMinutes > endMinutes)) 
+        {
+            return;
+        }
     this.setState({
       selectedHours: itemValue,
     }, () => {
