@@ -109,6 +109,7 @@ export default class TimePicker extends Component {
   }
 
   handleChangeTime = (hour,minute) => {
+    const { onChange } = this.props;
     this.setState({selectedHours:hour,
       selectedMinutes:minute}, () => {
       const { selectedHours, selectedMinutes } = this.state;
