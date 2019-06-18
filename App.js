@@ -110,7 +110,10 @@ export default class TimePicker extends Component {
 
   handleChangeTime = (hour,minute) => {
     this.setState({selectedHours:hour,
-      selectedMinutes:minute})
+      selectedMinutes:minute}, () => {
+      const { selectedHours, selectedMinutes } = this.state;
+      onChange(selectedHours, selectedMinutes);
+    });
   }
 
   render() {
