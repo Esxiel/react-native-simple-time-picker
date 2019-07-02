@@ -29,6 +29,7 @@ export default class TimePicker extends Component {
     startMinutes: PropTypes.number,
     endHours: PropTypes.number,
     endMinutes: PropTypes.number,
+    minMinutes: PropTypes.number,
     hoursUnit: PropTypes.string,
     minutesUnit: PropTypes.string,
   }
@@ -43,6 +44,7 @@ export default class TimePicker extends Component {
     startMinutes: 0,
     endHours: MAX_HOURS,
     endMinutes: MAX_MINUTES,
+    minMinutes: 0,
     hoursUnit: '',
     minutesUnit: '',
   }
@@ -69,24 +71,35 @@ export default class TimePicker extends Component {
 
   getMinutesImtes = () => {
     const items = [];
-    const { minutesUnit, minuteIntervals } = this.props;
+    const { minutesUnit, minuteIntervals, minMinutes, endHours, endMinutes } = this.props;
+    const { selectedHours } = this.state;
     for (let i = 0; i < parseInt(MAX_MINUTES/minuteIntervals); i++) {
-      items.push(
-        <Picker.Item key={i*minuteIntervals} value={i*minuteIntervals} label={`${(i*minuteIntervals).toString()}${minutesUnit}`} />,
-      );
+      if(selectedHours == endHours && i*minuteIntervals+minMinutes >= endMinutes) {
+        items.push(
+          <Picker.Item key={endMinutes} value={endMinutes} label={`${(endMinutes).toString()}${minutesUnit}`} />,
+        );
+        break;
+      } else {
+        items.push(
+          <Picker.Item key={i*minuteIntervals+minMinutes} value={i*minuteIntervals+minMinutes} label={`${(i*minuteIntervals+minMinutes).toString()}${minutesUnit}`} />,
+        );
+      }
     }
     return items;
   }
 
   handleChangeHours = (itemValue) => {
-    const { onChange, startHours, endHours, startMinutes, endMinutes } = this.props;
+    const { onChange, startHours, endHours, startMinutes, endMinutes, minuteIntervals, minMinutes } = this.props;
     const { selectedMinutes } = this.state;
-    if ((itemValue == startHours && selectedMinutes < startMinutes) || (itemValue == endHours && selectedMinutes > endMinutes)) 
-        {
-            return;
-        }
     this.setState({
       selectedHours: itemValue,
+      selectedMinutes: itemValue == endHours && selectedMinutes >= endMinutes 
+        ? endMinutes
+        : itemValue == startHours && selectedMinutes <= startMinutes
+          ? startMinutes
+          : (selectedMinutes - minMinutes) % minuteIntervals !== 0 
+            ? minMinutes
+            : selectedMinutes
     }, () => {
       const { selectedHours, selectedMinutes } = this.state;
       onChange(selectedHours, selectedMinutes);
