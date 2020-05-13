@@ -32,6 +32,7 @@ export default class TimePicker extends Component {
     minMinutes: PropTypes.number,
     hoursUnit: PropTypes.string,
     minutesUnit: PropTypes.string,
+    testIDPrefix: PropTypes.string
   }
 
   static defaultProps = {
@@ -47,6 +48,7 @@ export default class TimePicker extends Component {
     minMinutes: 0,
     hoursUnit: '',
     minutesUnit: '',
+    testIDPrefix: '',
   }
 
   constructor(props) {
@@ -132,10 +134,11 @@ export default class TimePicker extends Component {
 
   render() {
     const { selectedHours, selectedMinutes } = this.state;
+    const { testIDPrefix } = this.props;
     return (
       <View style={styles.container}>
         <Picker
-          testID="HoursPicker"
+          testID=`${testIDPrefix}HoursPicker`
           style={styles.picker}
           selectedValue={selectedHours}
           onValueChange={(itemValue) => this.handleChangeHours(itemValue)}
@@ -143,7 +146,7 @@ export default class TimePicker extends Component {
           {this.getHoursItems()}
         </Picker>
         <Picker
-          testID="MinutesPicker"
+          testID=`${testIDPrefix}MinutesPicker`
           style={styles.picker}
           selectedValue={selectedMinutes}
           onValueChange={(itemValue) => this.handleChangeMinutes(itemValue)}
