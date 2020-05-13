@@ -138,7 +138,7 @@ export default class TimePicker extends Component {
     return (
       <View style={styles.container}>
         <Picker
-          testID=`${testIDPrefix}HoursPicker`
+          testID={`${testIDPrefix}HoursPicker`}
           style={styles.picker}
           selectedValue={selectedHours}
           onValueChange={(itemValue) => this.handleChangeHours(itemValue)}
@@ -146,7 +146,7 @@ export default class TimePicker extends Component {
           {this.getHoursItems()}
         </Picker>
         <Picker
-          testID=`${testIDPrefix}MinutesPicker`
+          testID={`${testIDPrefix}MinutesPicker`}
           style={styles.picker}
           selectedValue={selectedMinutes}
           onValueChange={(itemValue) => this.handleChangeMinutes(itemValue)}
